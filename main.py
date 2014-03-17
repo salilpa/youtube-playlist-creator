@@ -7,5 +7,9 @@ Bootstrap(app)
 
 
 @app.route('/')
-def hello_world():
+def index():
+    return render_template("index.html")
+
+@app.route('/station/<string:name>')
+def station_details(name):
     return render_template("index.html")
