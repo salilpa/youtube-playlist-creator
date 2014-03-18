@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 {% block title %}Youtube playlist creator{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="../static/css/main.css">
+{% endblock %}
 
 {% block content %}
   <div id="login-container" class="pre-auth">This application requires access to your YouTube account.
       Please <a href="#" id="login-link">authorize</a> to continue.
     </div>
-    <div id="buttons">
-      <button id="playlist-button" disabled onclick="createPlaylist()">Create a new Private Playlist</button>
+    <div id="buttons" class="post-auth">
+      <button id="playlist-button" onclick="createPlaylist()">Create a new Private Playlist</button>
       <br>
       <label>Current Playlist Id: <input id="playlist-id" value='' type="text"/></label>
       <br>
@@ -18,6 +22,7 @@
       <span id="status">No Videos</span>
     </div>
     <div id="player"></div>
+    <div id="search-container"></div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="../static/js/auth.js"></script>
     <script src="../static/js/playlist_update.js"></script>

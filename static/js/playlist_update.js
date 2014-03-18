@@ -3,7 +3,7 @@ var playlistId, channelId;
 
 // After the API loads, call a function to enable the playlist creation form.
 function handleAPILoaded() {
-    createPlaylist();
+    //createPlaylist();
 }
 
 // Enable the form for creating a playlist.
@@ -69,5 +69,31 @@ function addToPlaylist(id, startPos, endPos) {
     });
     request.execute(function (response) {
         $('#status').html('<pre>' + JSON.stringify(response.result) + '</pre>');
+    });
+}
+
+function search(query) {
+    var request = gapi.client.youtube.search.list({
+        q: query,
+        part: 'snippet',
+        type: 'video',
+        maxResults: 1
+    });
+    console.log("in the search function searching for " + query)
+
+    request.execute(function(response) {
+        var items = response.result.items;
+        var video_id = typeof (items) == "undefined" ? null : items[0].id.videoId
+        if (video_id != null){
+            addToPlaylist(video_id);
+            console.log("adding to playlist " + video_id)
+        }
+    });
+}
+
+function keyWordListToPlaylist(keywordList){
+    $.each(keywordList, function( index, value ) {
+        search(value);
+        console.log("searching the keyword " + value)
     });
 }
