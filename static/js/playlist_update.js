@@ -3,14 +3,28 @@ var playlistId, channelId;
 
 // After the API loads, call a function to enable the playlist creation form.
 function handleAPILoaded() {
-    //createPlaylist();
+    getPlaylist(5)
 }
 
-// Enable the form for creating a playlist.
-function enableForm() {
-    $('#playlist-button').attr('disabled', false);
-}
 
+function getPlaylist(numberOfResults){
+    var request = gapi.client.youtube.playlists.list({
+        part: 'snippet',
+        maxResults: numberOfResults,
+        mine: true
+    });
+    request.execute(function (response) {
+        var result = response.result;
+        if (result) {
+            $.each(result.items, function( index, value ) {
+                $( "#playlist-container" ).append( "<div><p>" + value.id + "," + value.snippet.title + "," + value.snippet.description + "</p></div>" );
+                console.log(value);
+            });
+        } else {
+            $('#status').html('Could not get playlists');
+        }
+    });
+}
 // Create a private playlist.
 function createPlaylist() {
     var request = gapi.client.youtube.playlists.insert({
@@ -79,14 +93,12 @@ function search(query) {
         type: 'video',
         maxResults: 1
     });
-    console.log("in the search function searching for " + query)
 
     request.execute(function(response) {
         var items = response.result.items;
         var video_id = typeof (items) == "undefined" ? null : items[0].id.videoId
         if (video_id != null){
             addToPlaylist(video_id);
-            console.log("adding to playlist " + video_id)
         }
     });
 }
@@ -94,6 +106,5 @@ function search(query) {
 function keyWordListToPlaylist(keywordList){
     $.each(keywordList, function( index, value ) {
         search(value);
-        console.log("searching the keyword " + value)
     });
 }
