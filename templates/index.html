@@ -25,6 +25,7 @@
     </div>
     <div id="player"></div>
     <div id="search-container"></div>
+    <button ng-click='getVideos()'>get video</button>
     <ul>
         <li ng-repeat="video in videos">
             <a href="https://www.youtube.com/watch?v=[[video.id]]">[[video.title]]</a>
