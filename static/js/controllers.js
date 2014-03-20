@@ -4,7 +4,18 @@ youtubeApp.config(function ($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 });
+
 youtubeApp.controller('VideoListCtrl', function ($scope) {
+    $scope.$on('$viewContentLoaded', function() {
+        $scope.videos.push([
+            {'title':'Queen - Bohemian Rhapsody (Official Video)',
+                'description':"Subscribe to the Official Queen Channel Here http://bit.ly/Subscribe2Queen Queen - 'Bohemian Rhapsody' The official 'Bohemian Rhapsody' music video.",
+                'image': 'https://i.ytimg.com/vi/fJ9rUzIMcZQ/hqdefault.jpg',
+                'id': 'fJ9rUzIMcZQ'
+            }
+        ]);
+        console.log("been here")
+    });
     $scope.videos = [
         {'title':'Queen - Bohemian Rhapsody (Official Video)',
             'description':"Subscribe to the Official Queen Channel Here http://bit.ly/Subscribe2Queen Queen - 'Bohemian Rhapsody' The official 'Bohemian Rhapsody' music video.",
