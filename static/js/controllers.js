@@ -36,30 +36,36 @@ var payload = {
     }
 }
 var url = "http://youtube-playlist-parser.herokuapp.com/"
-var keywords = ["MARIVIL  DRISHYAM","KAATTU MOOLIYO OM SHANTHI OSANA ","OLANJAALI KURUVIL 1983","EERAN KAATTIN  SALALA MOBILES","MANDARAME OM SHANTHI OSANA ","KANNADI VATHIL LONDON BRIDGE","OMANA POOVE ORU INDIAN PRANAY","RASOOL ALLAH SALALA MOBILES","PUNCHIRI THANCHUM BYCYCLE THIEVES","LA LA LASA SALALA MOBILES","AASHICHAVAN PUNYALAN AGARBATTIS","NENJILE NENJILE 1983","THAMARAPOONKAVANAT BALYAKALA SAKHI","CHEMMANA CHELORUKKI MANNAR MATHAI SPE","THALAVATTOM 1983","THIRIYAANE MANNAR MATHAI SPE","MADHUMATHI GEETHANJALI","CHINNI CHINNI LONDON BRIDGE","THEERATHE NEELUNNE THIRA","OTTEKKU PAADUNNA NADAN"]
+var keywords = ["MARIVIL  DRISHYAM", "KAATTU MOOLIYO OM SHANTHI OSANA ", "OLANJAALI KURUVIL 1983", "EERAN KAATTIN  SALALA MOBILES", "MANDARAME OM SHANTHI OSANA ", "KANNADI VATHIL LONDON BRIDGE", "OMANA POOVE ORU INDIAN PRANAY", "RASOOL ALLAH SALALA MOBILES", "PUNCHIRI THANCHUM BYCYCLE THIEVES", "LA LA LASA SALALA MOBILES", "AASHICHAVAN PUNYALAN AGARBATTIS", "NENJILE NENJILE 1983", "THAMARAPOONKAVANAT BALYAKALA SAKHI", "CHEMMANA CHELORUKKI MANNAR MATHAI SPE", "THALAVATTOM 1983", "THIRIYAANE MANNAR MATHAI SPE", "MADHUMATHI GEETHANJALI", "CHINNI CHINNI LONDON BRIDGE", "THEERATHE NEELUNNE THIRA", "OTTEKKU PAADUNNA NADAN"]
 
 youtubeApp.controller('VideoListCtrl', function ($scope, $http) {
     $scope.videos = []
 
     $http({method: 'POST', url: url, data: payload}).
-        success(function(data, status, headers, config) {
-            keywords = data;
-            $scope.getVideos();
+        success(function (data, status, headers, config) {
+            keywords = data.split("|");
+            var body = document.getElementsByTagName('body')[0];
+            scope = angular.element(body).scope();
+            scope.getVideos();
             // this callback will be called asynchronously
             // when the response is available
         }).
-        error(function(data, status, headers, config) {
+        error(function (data, status, headers, config) {
             // called asynchronously if an error occurs
             // or server returns response with an error status.
         });
+
+    $scope.addVideos = function (video) {
+        $scope.videos.push(video);
+    }
 
     $scope.getVideos = function () {
         $.each(keywords, function (index, value) {
             var request = gapi.client.youtube.search.list({
                 q: value,
-                part:'snippet',
-                type:'video',
-                maxResults:1
+                part: 'snippet',
+                type: 'video',
+                maxResults: 1
             });
 
             request.execute(function (response) {
@@ -70,14 +76,16 @@ youtubeApp.controller('VideoListCtrl', function ($scope, $http) {
                 var description = typeof (items) == "undefined" ? null : items[0].snippet.description
                 var image_url = typeof (items) == "undefined" ? null : items[0].snippet.thumbnails.high.url
                 if (video_id != null) {
-                    $scope.videos.push(
-                        {
-                            title:title,
-                            id:video_id,
-                            description:description,
-                            image:image_url
-                        }
-                    );
+                    var body = document.getElementsByTagName('body')[0];
+                    scope = angular.element(body).scope();
+                    scope.$apply(function () {
+                        scope.videos.push({
+                            id: video_id,
+                            title: title,
+                            description: description,
+                            image: image_url
+                        });
+                    });
                 } else {
                     console.log(response)
                 }
