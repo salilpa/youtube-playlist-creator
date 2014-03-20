@@ -38,8 +38,21 @@ var payload = {
 var url = "http://youtube-playlist-parser.herokuapp.com/"
 var keywords = ["MARIVIL  DRISHYAM","KAATTU MOOLIYO OM SHANTHI OSANA ","OLANJAALI KURUVIL 1983","EERAN KAATTIN  SALALA MOBILES","MANDARAME OM SHANTHI OSANA ","KANNADI VATHIL LONDON BRIDGE","OMANA POOVE ORU INDIAN PRANAY","RASOOL ALLAH SALALA MOBILES","PUNCHIRI THANCHUM BYCYCLE THIEVES","LA LA LASA SALALA MOBILES","AASHICHAVAN PUNYALAN AGARBATTIS","NENJILE NENJILE 1983","THAMARAPOONKAVANAT BALYAKALA SAKHI","CHEMMANA CHELORUKKI MANNAR MATHAI SPE","THALAVATTOM 1983","THIRIYAANE MANNAR MATHAI SPE","MADHUMATHI GEETHANJALI","CHINNI CHINNI LONDON BRIDGE","THEERATHE NEELUNNE THIRA","OTTEKKU PAADUNNA NADAN"]
 
-youtubeApp.controller('VideoListCtrl', function ($scope) {
+youtubeApp.controller('VideoListCtrl', function ($scope, $http) {
     $scope.videos = []
+
+    $http({method: 'POST', url: url, data: payload}).
+        success(function(data, status, headers, config) {
+            keywords = data;
+            $scope.getVideos();
+            // this callback will be called asynchronously
+            // when the response is available
+        }).
+        error(function(data, status, headers, config) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
+
     $scope.getVideos = function () {
         $.each(keywords, function (index, value) {
             var request = gapi.client.youtube.search.list({
