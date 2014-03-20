@@ -26,9 +26,10 @@
     <div id="player"></div>
     <div id="search-container"></div>
     <ul>
-        <li ng-repeat="phone in phones">
-            [[phone.name]]
-            <p>[[phone.snippet]]</p>
+        <li ng-repeat="video in videos">
+            <a href="https://www.youtube.com/watch?v=[[video.id]]">[[video.title]]</a>
+            <p>[[video.description]]</p>
+            <img src="[[video.image]]"/>
         </li>
     </ul>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
