@@ -1,10 +1,10 @@
-var phonecatApp = angular.module('phonecatApp', []);
+var youtubeApp = angular.module('youtubeApp', []);
 
-phonecatApp.config(function($interpolateProvider) {
+youtubeApp.config(function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 });
-phonecatApp.controller('PhoneListCtrl', function ($scope) {
+youtubeApp.controller('VideoListCtrl', function ($scope) {
     $scope.phones = [
         {'name': 'Nexus S',
             'snippet': 'Fast just got faster with Nexus S.'},
