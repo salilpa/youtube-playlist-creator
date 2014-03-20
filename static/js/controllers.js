@@ -4,10 +4,42 @@ youtubeApp.config(function ($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 });
-
-var keywords = ["highway to hell", "queen we will rock you", "hamma hamma"]
+var payload = {
+    "url": 'http://www.radiomirchi.com/thiruvananthapuram/countdown/malayalam-top-20',
+    "settings": {
+        "parser": "html5lib",
+        "headers": {
+            "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0",
+        }
+    },
+    "soup_path_for_list": {
+        "tag": "div",
+        "attr": {
+            "class": "mirchi_20_box2"
+        }
+    },
+    "soup_path_for_keyword": {
+        "paths": [
+            {
+                "tag": "span",
+                "attr": {
+                    "class": "or12"
+                }
+            },
+            {
+                "tag": "span",
+                "attr": {
+                    "class": "moviename"
+                }
+            },
+        ]
+    }
+}
+var url = "http://youtube-playlist-parser.herokuapp.com/"
+var keywords = ["MARIVIL  DRISHYAM","KAATTU MOOLIYO OM SHANTHI OSANA ","OLANJAALI KURUVIL 1983","EERAN KAATTIN  SALALA MOBILES","MANDARAME OM SHANTHI OSANA ","KANNADI VATHIL LONDON BRIDGE","OMANA POOVE ORU INDIAN PRANAY","RASOOL ALLAH SALALA MOBILES","PUNCHIRI THANCHUM BYCYCLE THIEVES","LA LA LASA SALALA MOBILES","AASHICHAVAN PUNYALAN AGARBATTIS","NENJILE NENJILE 1983","THAMARAPOONKAVANAT BALYAKALA SAKHI","CHEMMANA CHELORUKKI MANNAR MATHAI SPE","THALAVATTOM 1983","THIRIYAANE MANNAR MATHAI SPE","MADHUMATHI GEETHANJALI","CHINNI CHINNI LONDON BRIDGE","THEERATHE NEELUNNE THIRA","OTTEKKU PAADUNNA NADAN"]
 
 youtubeApp.controller('VideoListCtrl', function ($scope) {
+    $scope.videos = []
     $scope.getVideos = function () {
         $.each(keywords, function (index, value) {
             var request = gapi.client.youtube.search.list({
@@ -20,6 +52,7 @@ youtubeApp.controller('VideoListCtrl', function ($scope) {
             request.execute(function (response) {
                 var items = response.result.items;
                 var video_id = typeof (items) == "undefined" ? null : items[0].id.videoId
+                console.log(video_id)
                 var title = typeof (items) == "undefined" ? null : items[0].snippet.title
                 var description = typeof (items) == "undefined" ? null : items[0].snippet.description
                 var image_url = typeof (items) == "undefined" ? null : items[0].snippet.thumbnails.high.url
@@ -32,22 +65,11 @@ youtubeApp.controller('VideoListCtrl', function ($scope) {
                             image:image_url
                         }
                     );
+                } else {
+                    console.log(response)
                 }
             });
         });
 
     };
-
-    $scope.videos = [
-        {'title':'Queen - Bohemian Rhapsody (Official Video)',
-            'description':"Subscribe to the Official Queen Channel Here http://bit.ly/Subscribe2Queen Queen - 'Bohemian Rhapsody' The official 'Bohemian Rhapsody' music video.",
-            'image':'https://i.ytimg.com/vi/fJ9rUzIMcZQ/hqdefault.jpg',
-            'id':'fJ9rUzIMcZQ'
-        },
-        {'title':'Metallica - Nothing Else Matters [Official Music Video]',
-            'description':'SONG FACTS: Singer and rhythm guitarist \"James Hetfield\" wrote this song while he was on the phone with his girlfriend at this time. Since he held the phone ...',
-            'image':'https://i.ytimg.com/vi/Tj75Arhq5ho/hqdefault.jpg',
-            'id':'Tj75Arhq5ho'
-        }
-    ];
 });

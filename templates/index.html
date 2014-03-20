@@ -8,31 +8,23 @@
 {% block body_attribs %} ng-controller="VideoListCtrl"{% endblock %}
 
 {% block content %}
-  <div id="login-container" class="pre-auth">This application requires access to your YouTube account.
-      Please <a href="#" id="login-link">authorize</a> to continue.
+    <div class="container">
+        <div id="login-container" class="pre-auth">This application requires access to your YouTube account.
+            Please <a href="#" id="login-link">authorize</a> to continue.
+        </div>
+        <div id="buttons" class="post-auth">
+            <button ng-click='getVideos()'>get video</button>
+        </div>
+        <ul>
+            <p>[[videos.length]]</p>
+            <li ng-repeat="video in videos">
+                <a href="https://www.youtube.com/watch?v=[[video.id]]">[[video.title]]</a>
+
+                <p>[[video.description]]</p>
+                <img ng-src="[[video.image]]"/>
+            </li>
+        </ul>
     </div>
-    <div id="buttons" class="post-auth">
-      <button id="playlist-button" onclick="createPlaylist()">Create a new Private Playlist</button>
-      <br>
-      <label>Current Playlist Id: <input id="playlist-id" value='' type="text"/></label>
-      <br>
-      <label>Video Id: <input id="video-id" value='GZG9G5txtaE' type="text"/></label><button onclick="addVideoToPlaylist()">Add to current playlist</button>
-    </div>
-    <h3>Playlist: <span id="playlist-title"></span></h3>
-    <p id="playlist-description"></p>
-    <div id="playlist-container">
-      <span id="status">No Videos</span>
-    </div>
-    <div id="player"></div>
-    <div id="search-container"></div>
-    <button ng-click='getVideos()'>get video</button>
-    <ul>
-        <li ng-repeat="video in videos">
-            <a href="https://www.youtube.com/watch?v=[[video.id]]">[[video.title]]</a>
-            <p>[[video.description]]</p>
-            <img src="[[video.image]]"/>
-        </li>
-    </ul>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
     <script src="../static/js/controllers.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
