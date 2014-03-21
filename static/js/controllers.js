@@ -36,7 +36,7 @@ var payload = {
     }
 }
 var url = "http://youtube-playlist-parser.herokuapp.com/"
-var keywords = ["MARIVIL  DRISHYAM", "KAATTU MOOLIYO OM SHANTHI OSANA ", "OLANJAALI KURUVIL 1983", "EERAN KAATTIN  SALALA MOBILES", "MANDARAME OM SHANTHI OSANA ", "KANNADI VATHIL LONDON BRIDGE", "OMANA POOVE ORU INDIAN PRANAY", "RASOOL ALLAH SALALA MOBILES", "PUNCHIRI THANCHUM BYCYCLE THIEVES", "LA LA LASA SALALA MOBILES", "AASHICHAVAN PUNYALAN AGARBATTIS", "NENJILE NENJILE 1983", "THAMARAPOONKAVANAT BALYAKALA SAKHI", "CHEMMANA CHELORUKKI MANNAR MATHAI SPE", "THALAVATTOM 1983", "THIRIYAANE MANNAR MATHAI SPE", "MADHUMATHI GEETHANJALI", "CHINNI CHINNI LONDON BRIDGE", "THEERATHE NEELUNNE THIRA", "OTTEKKU PAADUNNA NADAN"]
+var keywords = []
 
 youtubeApp.controller('VideoListCtrl', function ($scope, $http) {
     $scope.videos = []
@@ -85,6 +85,9 @@ youtubeApp.controller('VideoListCtrl', function ($scope, $http) {
                             description: description,
                             image: image_url
                         });
+                        if (scope.videos.length == 0){
+                            player.loadVideoById("bHQqvYy5KYo");
+                        }
                     });
                 } else {
                     console.log(response)
